@@ -40,32 +40,36 @@ for i in range(range_awal, range_akhir):
  print(f"Iterasi ke - {i}")
  text = df["reviews"][i]
  respon = get_label(text)
- print(respon)
- categories = re.findall(pattern_text, respon)
- categories = [category.lower() for category in categories]
- numbers = re.findall(pattern, respon)
- numbers = list(map(int, numbers))
- if len(numbers) == 4 and len(categories) == 4:
-  try:
-   food_index = categories.index("food")
-   service_index = categories.index("service")
-   ambiance_index = categories.index("ambience")
-   price_index = categories.index("price")
-  except:
+ try:
+  print(respon)
+  categories = re.findall(pattern_text, respon)
+  categories = [category.lower() for category in categories]
+  numbers = re.findall(pattern, respon)
+  numbers = list(map(int, numbers))
+  if len(numbers) == 4 and len(categories) == 4:
+   try:
+    food_index = categories.index("food")
+    service_index = categories.index("service")
+    ambiance_index = categories.index("ambience")
+    price_index = categories.index("price")
+   except:
+    error_label.append(i)
+    input_error_label.append(text)
+    output_error_label.append(respon)
+    continue
+   resp_text.append(respon)
+   reviews.append(text)
+   food.append(int(numbers[food_index]))
+   service.append(int(numbers[service_index]))
+   ambiance.append(int(numbers[ambiance_index]))
+   price.append(int(numbers[price_index]))
+  else:
    error_label.append(i)
    input_error_label.append(text)
    output_error_label.append(respon)
-   continue
-  resp_text.append(respon)
-  reviews.append(text)
-  food.append(int(numbers[food_index]))
-  service.append(int(numbers[service_index]))
-  ambiance.append(int(numbers[ambiance_index]))
-  price.append(int(numbers[price_index]))
- else:
-  error_label.append(i)
-  input_error_label.append(text)
-  output_error_label.append(respon)
+ except:
+  print(f"No respon iterasi ke - {i}")
+  continue
 
 
 
